@@ -1,14 +1,29 @@
-import React from "react";
+import React, { useRef } from "react";
 import img from "../assets/images/contact-img.svg";
+import emailjs from '@emailjs/browser';
 
 function Contact() {
+  const form = useRef();
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+
+    emailjs.sendForm('service_80km3ds', 'Contact_template_99ypy7v', form.current, '8TBp7G5GfyBEqa-Wg')
+      .then((result) => {
+          console.log(result.text);
+      }, (error) => {
+          console.log(error.text);
+      });
+    }
   return (
     <>
       <div
         id="contact"
         className="contact bg-[linear-gradient(90deg,#b004b0,#38097a);] w-full"
       >
-        <h1 className="text-white font-bold text-5xl text-center py-4 border-b-2 w-48 mx-auto">Contact</h1>
+        <h1 className="text-white font-bold text-5xl text-center py-4 border-b-2 w-48 mx-auto">
+          Contact
+        </h1>
 
         <div className="wrapper flex justify-center  py-16 gap-52 lg:py-12">
           <div className="imgbox lg:hidden">
@@ -16,16 +31,23 @@ function Contact() {
           </div>
           <div className="content-box">
             <h1 className="text-white font-bold text-4xl">Get In Touch</h1>
-            <form action="" className="flex flex-col ">
+            <form
+              action=""
+              className="flex flex-col "
+              ref={form}
+              onSubmit={sendEmail}
+            >
               <div className="flex gap-4 py-2  ">
                 <input
                   className="bg-transparent h-14 rounded-2xl  border-[1px] border-white pl-4 text-white placeholder-white lg:w-36 "
                   type="text"
-                  placeholder="Name"
+                  name="first_name"
+                  placeholder="First Name"
                 />
                 <input
                   className="bg-transparent h-14  rounded-2xl  border-[1px] border-white pl-4 text-white placeholder-white  lg:w-36"
                   type="text"
+                  name="last_name"
                   placeholder="Last Name"
                 />
               </div>
@@ -33,11 +55,13 @@ function Contact() {
                 <input
                   className="bg-transparent h-14  rounded-2xl   border-[1px] border-white pl-4 text-white placeholder-white  lg:w-36"
                   type="email"
+                  name="user_email"
                   placeholder="Email"
                 />
                 <input
                   className="bg-transparent h-14  rounded-2xl  border-[1px] border-white pl-4 text-white placeholder-white  lg:w-36"
                   type="phone"
+                  name="user_phone"
                   placeholder="Phone"
                 />
               </div>
@@ -46,8 +70,13 @@ function Contact() {
                 rows={40}
                 cols={35}
                 placeholder="Message"
+                name="message"
               ></textarea>
-              <button className="bg-white border-black border-[1] py-[16px] rounded-lg px-8 my-8 w-32 font-bold ">
+              <button
+                type="submit"
+                value="Send"
+                className="bg-white border-black border-[1] py-[16px] rounded-lg px-8 my-8 w-32 font-bold "
+              >
                 Send
               </button>
             </form>
